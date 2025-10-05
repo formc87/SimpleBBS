@@ -45,6 +45,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+        <!-- Kafka 연동을 위한 스타터 -->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
         <!-- 가볍고 편리한 H2 메모리 데이터베이스 -->
         <dependency>
             <groupId>com.h2database</groupId>

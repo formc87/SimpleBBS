@@ -1,5 +1,8 @@
 package com.example.simplebbs.post;
 
+import com.example.simplebbs.post.event.PostEvent;
+import com.example.simplebbs.post.event.PostEventPublisher;
+import com.example.simplebbs.post.event.PostEventType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +19,13 @@ public class PostService {
     /** 실제 DB 처리를 담당하는 JPA 저장소를 주입받습니다. */
     private final PostRepository postRepository;
 
-    /** 생성자 주입 방식으로 스프링이 자동으로 PostRepository 구현체를 넣어줍니다. */
-    public PostService(PostRepository postRepository) {
+    /** 게시글 이벤트를 외부로 발행하는 퍼블리셔입니다. */
+    private final PostEventPublisher postEventPublisher;
+
+    /** 생성자 주입 방식으로 스프링이 자동으로 필요한 의존성을 넣어줍니다. */
+    public PostService(PostRepository postRepository, PostEventPublisher postEventPublisher) {
         this.postRepository = postRepository;
+        this.postEventPublisher = postEventPublisher;
     }
 
     /** 모든 게시글을 최신 순서와 상관없이 통째로 가져옵니다. */
@@ -37,7 +44,9 @@ public class PostService {
 
     /** 새 게시글을 DB에 저장합니다. */
     public Post create(Post post) {
-        return postRepository.save(post);
+        Post saved = postRepository.save(post);
+        postEventPublisher.publish(PostEvent.of(PostEventType.CREATED, saved));
+        return saved;
     }
 
     /**
@@ -49,17 +58,17 @@ public class PostService {
         existing.setTitle(updated.getTitle());
         existing.setContent(updated.getContent());
         existing.setAuthor(updated.getAuthor());
-        return postRepository.save(existing);
+        Post saved = postRepository.save(existing);
+        postEventPublisher.publish(PostEvent.of(PostEventType.UPDATED, saved));
+        return saved;
     }
 
     /**
-     * 게시글을 삭제합니다.
-     * 삭제 전에 existsById로 존재 여부를 확인해 존재하지 않으면 404 예외를 던집니다.
+     * 게시글을 삭제합니다. 삭제 대상이 없으면 findById에서 404 예외를 던집니다.
      */
     public void delete(Long id) {
-        if (!postRepository.existsById(id)) {
-            throw new PostNotFoundException(id);
-        }
-        postRepository.deleteById(id);
+        Post existing = findById(id);
+        postRepository.delete(existing);
+        postEventPublisher.publish(PostEvent.of(PostEventType.DELETED, existing));
     }
 }

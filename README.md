@@ -9,7 +9,8 @@
 - 백엔드: Spring Boot (Java 기반 REST API)
 - 프론트엔드: React.js (최신 버전)
 - 데이터베이스: H2 (인메모리, 테스트용)
-- 주요 기능: 게시글 CRUD (생성, 조회, 수정, 삭제)
+- 메시징: Apache Kafka (게시판 이벤트 전송)
+- 주요 기능: 게시글 CRUD (생성, 조회, 수정, 삭제) 및 별도 통계 마이크로서비스
 
 ---
 
@@ -24,8 +25,9 @@
 
 ## 프로젝트 구조
 
-/backend # Spring Boot 애플리케이션 소스 및 설정
+/backend # 게시판 REST API (Spring Boot)
 /frontend # React.js 프론트엔드 소스 및 설정
+/stats-service # Kafka 기반 게시판 통계 마이크로서비스
 
 
 
@@ -35,6 +37,28 @@
 
 1. `/backend` 디렉토리로 이동
 2. `./mvnw spring-boot:run` 명령어로 실행
+
+---
+
+## Kafka 브로커 & UI 실행 방법
+
+게시판 서비스와 통계 마이크로서비스가 발행/소비하는 이벤트를 확인할 수 있도록 Kafka UI를 포함한 개발용 스택을 제공합니다.
+
+1. `docker compose -f docker-compose.kafka.yml up -d`
+2. Kafka 브로커는 `localhost:9092`에서 수신하며 토픽은 필요 시 자동 생성됩니다.
+3. Kafka UI는 `http://localhost:8082`에서 접속할 수 있고 `post-events` 토픽의 메시지를 실시간으로 확인할 수 있습니다.
+
+종료 시 `docker compose -f docker-compose.kafka.yml down`을 사용하세요.
+
+## 통계 마이크로서비스 실행 방법
+
+게시판 API와는 별도 프로세스로 동작하며, Kafka 브로커가 선행 실행되어 있어야 합니다.
+
+1. `/stats-service` 디렉토리로 이동
+2. `./mvnw spring-boot:run` 명령어로 실행
+3. 기본 포트는 `8081`이며 `GET /api/stats`로 집계 결과를 조회할 수 있습니다.
+
+환경 변수 `KAFKA_BOOTSTRAP_SERVERS`와 `SERVER_PORT`로 브로커 주소와 포트를 조정할 수 있습니다.
 
 ---
 
@@ -56,6 +80,12 @@
 | PUT    | /api/posts/{id} | 게시글 수정        |
 | DELETE | /api/posts/{id} | 게시글 삭제        |
 
+### 새로 추가된 통계 API
+
+| 메서드 | 경로        | 설명                        |
+|--------|-------------|-----------------------------|
+| GET    | /api/stats  | 게시판 이벤트 기반 통계 조회 |
+
 ---
 
 ## 기능 설명
@@ -72,6 +102,7 @@
 - 데이터베이스는 테스트 용도로 H2 인메모리 DB 사용
 - 실제 배포 시 MySQL 등 외부 DB로 변경 권장
 - 인증 및 권한 관리는 추후 확장 예정
+- Kafka 브로커 주소는 `KAFKA_BOOTSTRAP_SERVERS` 환경 변수로 조정할 수 있습니다.
 
 ---
 
