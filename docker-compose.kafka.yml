@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   zookeeper:
-    image: bitnami/zookeeper:3.9
+    image: bitnami/zookeeper:3.9.2
     container_name: simplebbs-zookeeper
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes

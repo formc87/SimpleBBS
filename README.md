@@ -47,6 +47,7 @@
 1. `docker compose -f docker-compose.kafka.yml up -d`
 2. Kafka 브로커는 `localhost:9092`에서 수신하며 토픽은 필요 시 자동 생성됩니다.
 3. Kafka UI는 `http://localhost:8082`에서 접속할 수 있고 `post-events` 토픽의 메시지를 실시간으로 확인할 수 있습니다.
+   - 구성은 `bitnami/zookeeper:3.9.2` 이미지를 사용하도록 업데이트되었습니다.
 
 종료 시 `docker compose -f docker-compose.kafka.yml down`을 사용하세요.
 
