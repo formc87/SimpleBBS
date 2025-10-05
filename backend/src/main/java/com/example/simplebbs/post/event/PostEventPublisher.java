@@ -30,12 +30,17 @@ public class PostEventPublisher {
      */
     public void publish(PostEvent event) {
         kafkaTemplate.send(topic, event.postId().toString(), event)
-                .addCallback(result -> {
+                .whenComplete((result, throwable) -> {
+                    if (throwable != null) {
+                        log.error("Failed to publish post event: {}", event, throwable);
+                        return;
+                    }
+
                     if (result != null && log.isDebugEnabled()) {
                         log.debug("Published post event to topic {} partition {} offset {}", topic,
                                 result.getRecordMetadata().partition(),
                                 result.getRecordMetadata().offset());
                     }
-                }, throwable -> log.error("Failed to publish post event: {}", event, throwable));
+                });
     }
 }
