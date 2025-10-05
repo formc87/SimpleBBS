@@ -26,7 +26,6 @@ public class KafkaConsumerConfig {
     public ConsumerFactory<String, PostEvent> postEventConsumerFactory() {
         Map<String, Object> props = kafkaProperties.buildConsumerProperties(null);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 
         JsonDeserializer<PostEvent> jsonDeserializer = new JsonDeserializer<>(PostEvent.class);
         jsonDeserializer.addTrustedPackages("*");
