@@ -1,7 +1,14 @@
+/* 전체 앱 레이아웃에 대한 기본 설정입니다. */
 .app {
   max-width: 1080px;
   margin: 0 auto;
   padding: 2rem 1.5rem 4rem;
+}
+
+.app__header {
+  /* 상단 제목 영역을 가운데 정렬해 첫인상을 좋게 만듭니다. */
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .app__header {
@@ -19,6 +26,7 @@
   color: #52606d;
 }
 
+/* 본문 영역은 화면 크기에 따라 유연하게 배치합니다. */
 .app__content {
   display: grid;
   gap: 1.5rem;
@@ -31,6 +39,7 @@
   }
 }
 
+/* 카드 형태의 섹션 박스 스타일입니다. */
 .app__section {
   background: #ffffff;
   border-radius: 16px;
@@ -43,11 +52,13 @@
   margin-bottom: 1rem;
 }
 
+/* 오류 메시지를 눈에 띄게 표시합니다. */
 .app__error {
   color: #dc2626;
   margin-bottom: 1rem;
 }
 
+/* 게시글 목록을 세로로 나열합니다. */
 .post-list {
   list-style: none;
   margin: 0;
@@ -57,6 +68,7 @@
   gap: 0.75rem;
 }
 
+/* 각 게시글을 카드처럼 보이게 만드는 스타일입니다. */
 .post-list__item {
   display: flex;
   gap: 0.5rem;
@@ -68,6 +80,7 @@
   background-color: #f8fafc;
 }
 
+/* 제목 버튼은 배경을 없애고 텍스트만 보이도록 합니다. */
 .post-list__title {
   flex: 1;
   text-align: left;
@@ -82,6 +95,7 @@
   color: #1f2933;
 }
 
+/* 작성자와 작성 시간을 작게 표시합니다. */
 .post-list__meta {
   display: block;
   margin-top: 0.25rem;
@@ -89,6 +103,7 @@
   color: #64748b;
 }
 
+/* 삭제 버튼은 붉은색 계열로 경고 느낌을 줍니다. */
 .post-list__delete {
   border: none;
   background: #ef4444;
@@ -102,18 +117,21 @@
   background: #dc2626;
 }
 
+/* 입력 폼은 세로로 정렬하여 읽기 쉽도록 합니다. */
 .post-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
+/* 라벨 텍스트를 굵게 표시해 입력 항목을 구분합니다. */
 .post-form__field span {
   display: block;
   margin-bottom: 0.4rem;
   font-weight: 600;
 }
 
+/* 입력창 기본 스타일입니다. */
 .post-form__field input,
 .post-form__field textarea {
   width: 100%;
@@ -124,6 +142,7 @@
   transition: border-color 0.2s ease;
 }
 
+/* 포커스 되었을 때 파란색 테두리로 강조합니다. */
 .post-form__field input:focus,
 .post-form__field textarea:focus {
   outline: none;
@@ -131,11 +150,13 @@
   background-color: #ffffff;
 }
 
+/* 제출/취소 버튼을 가로로 배치합니다. */
 .post-form__actions {
   display: flex;
   gap: 0.75rem;
 }
 
+/* 제출 버튼은 대표 색상을 사용합니다. */
 .post-form__submit {
   flex: none;
   padding: 0.6rem 1.2rem;
@@ -146,6 +167,7 @@
   cursor: pointer;
 }
 
+/* 취소 버튼은 중립적인 회색을 사용합니다. */
 .post-form__cancel {
   flex: none;
   padding: 0.6rem 1.2rem;

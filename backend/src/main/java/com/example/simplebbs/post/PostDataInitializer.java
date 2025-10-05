@@ -3,15 +3,23 @@ package com.example.simplebbs.post;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+/**
+ * 애플리케이션이 처음 실행될 때 샘플 데이터를 넣어 주는 초기화 클래스입니다.
+ * 게시판이 비어 있으면 방문자가 허전해하므로 기본 글 두 개를 자동으로 생성합니다.
+ */
 @Component
 public class PostDataInitializer implements CommandLineRunner {
 
+    /** DB와 연결된 저장소입니다. */
     private final PostRepository postRepository;
 
     public PostDataInitializer(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
 
+    /**
+     * CommandLineRunner의 run 메서드는 애플리케이션 부팅이 끝난 직후 한 번 실행됩니다.
+     */
     @Override
     public void run(String... args) {
         if (postRepository.count() == 0) {
