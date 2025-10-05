@@ -12,9 +12,17 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 전역 예외 처리기입니다.
+ * 컨트롤러에서 검증 오류(예: @Valid 실패)가 발생하면 일관된 형식의 JSON 응답을 내려줍니다.
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    /**
+     * MethodArgumentNotValidException은 @Valid 검증이 실패했을 때 발생합니다.
+     * 필드별 오류 메시지를 모아서 프론트엔드가 보기 편한 구조로 내려줍니다.
+     */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex,
