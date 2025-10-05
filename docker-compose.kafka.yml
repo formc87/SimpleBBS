@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   zookeeper:
-    image: bitnami/zookeeper:3.9.1
+    image: zookeeper:latest
     container_name: simplebbs-zookeeper
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
@@ -10,7 +10,7 @@ services:
       - '2181:2181'
 
   kafka:
-    image: bitnami/kafka:3.6.1
+    image: confluentinc/cp-kafka:latest
     container_name: simplebbs-kafka
     depends_on:
       - zookeeper
